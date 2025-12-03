@@ -1,43 +1,43 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
-    application
-    kotlin("plugin.serialization") version "1.9.22"
+    kotlin("jvm") version "1.9.0"
+    id("io.ktor.plugin") version "2.3.4"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 group = "com.musica"
-version = "1.0.0"
+version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("io.ktor.server.netty.EngineMain")
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // Ktor Core
-    implementation("io.ktor:ktor-server-core:2.3.7")
-    implementation("io.ktor:ktor-server-netty:2.3.7")
-    implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
-    implementation("io.ktor:ktor-server-cors:2.3.7")
+    // Ktor core
+    implementation("io.ktor:ktor-server-core-jvm:2.3.4")
+    implementation("io.ktor:ktor-server-netty-jvm:2.3.4")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.3.4")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:2.3.4")
+    implementation("io.ktor:ktor-server-call-logging-jvm:2.3.4")
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.3.4")
 
-    // Logging
-    implementation("ch.qos.logback:logback-classic:1.4.14")
+    // Logs
+    implementation("ch.qos.logback:logback-classic:1.4.12")
 
-    // PostgreSQL
+    // DB: Hikari + PostgreSQL + Exposed
+    implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.postgresql:postgresql:42.7.1")
+    implementation("org.jetbrains.exposed:exposed-core:0.51.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.51.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.51.1")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.51.1")
 
-    // JSON
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    testImplementation(kotlin("test"))
 }
 
-application {
-    mainClass.set("com.musica.MainKt")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
-}
-
-tasks.withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+kotlin {
+    jvmToolchain(17)
 }
